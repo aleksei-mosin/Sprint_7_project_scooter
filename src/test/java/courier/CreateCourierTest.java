@@ -3,7 +3,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,7 +27,6 @@ import org.junit.Test;
          CourierLogin courierCred = CourierLogin.from(courierPattern);
          courierId = courierSteps.courierLogin(courierCred).extract().path("id");
          courierAsserts.courierCreate(responseCreateCourier);
-         responseCreateCourier.assertThat().statusCode(201);
      }
      @Test
      @DisplayName("Пустой логин при создании курьера")
@@ -37,7 +35,6 @@ import org.junit.Test;
          courierPattern.setLogin("");
          ValidatableResponse responseLoginNull = courierSteps.courierCreate(courierPattern);
          courierAsserts.courierCreateError(responseLoginNull);
-         responseLoginNull.assertThat().statusCode(400);
 
      }
      @Test
@@ -47,8 +44,6 @@ import org.junit.Test;
          courierPattern.setPassword("");
          ValidatableResponse responsePasswordNull = courierSteps.courierCreate(courierPattern);
          courierAsserts.courierCreateError(responsePasswordNull);
-         responsePasswordNull.assertThat().statusCode(400);
-
      }
      @Test
      @DisplayName("Курьер создается с идентичными логином и паролем предыдущего курьера")
@@ -57,6 +52,5 @@ import org.junit.Test;
          courierSteps.courierCreate(courierPattern);
          ValidatableResponse responseCreateDuplicateCourier = courierSteps.courierCreate(courierPattern);
          courierAsserts.courierCreateLoginDuplicat(responseCreateDuplicateCourier);
-         responseCreateDuplicateCourier.assertThat().statusCode(409);
      }
  }

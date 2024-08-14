@@ -1,11 +1,9 @@
 package order;
 
 import io.qameta.allure.Description;
-import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
-import org.junit.After;
-import org.junit.Before;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -16,11 +14,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
 @RunWith(Parameterized.class)
-public class ParametrizedTest {
+public class ParametrizedTest extends BaseOrderTest {
     private final List<String> colour;
-    private int track;
-    private OrderSteps orderSteps;
-
     public ParametrizedTest(List<String> colour) {
         this.colour = colour;
     }
@@ -33,11 +28,6 @@ public class ParametrizedTest {
                 {List.of("")}
         };
     }
-    @Before
-    public void setUp() {
-        orderSteps = new OrderSteps();
-    }
-
     @Test
     @DisplayName("Создание заказа с самокатами всех цветов")
     @Description("Корретное создание заказа с самокатами разных цветов")
@@ -48,10 +38,5 @@ public class ParametrizedTest {
         responseOrder.assertThat()
                 .statusCode(201)
                 .body("track", is(notNullValue()));
-    }
-    @After
-    @Step("Отменить заказ")
-    public void cancelOrder() {
-        orderSteps.cancelOrder(track);
     }
 }
